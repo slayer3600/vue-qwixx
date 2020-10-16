@@ -9,8 +9,22 @@
     >
       <span class="text-h5 red--text font-weight-black" :class="textColor">
         {{ state.value }}
-        <v-icon large v-if="this.state.selected" class="ml-n10 mt-n1 float-right" color="green darken-2">
+        <v-icon
+          large
+          v-if="this.state.selected"
+          class="ml-n10 mt-n1 float-right"
+          color="green darken-2"
+          style="z-index: 9999"
+        >
           mdi-check-bold
+        </v-icon>
+        <v-icon
+          large
+          v-if="this.state.value == 'L'"
+          class="ml-n10 mt-n1 float-right"
+          :class="textColor"
+        >
+          mdi-lock-open
         </v-icon>
       </span>
     </v-card>
