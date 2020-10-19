@@ -2,13 +2,22 @@
   <div>
     <v-card
       style="min-width:62px;"
-      class="pa-3 rounded-lg text-center"
-      :class="{ grey: this.state.disabled }"
+      class="pa-3 text-center"
+      :class="{
+        grey: this.state.disabled,
+        'rounded-lg': this.state.value < 13,
+        'rounded-circle': this.state.value == 'L'
+      }"
       @click="toggleSelected"
       tile
     >
-      <span class="text-h5 red--text font-weight-black" :class="textColor">
-        {{ state.value }}
+      <span class="text-h5 font-weight-black" :class="textColor">
+        <span v-if="this.state.value < 13">
+          {{ state.value }}
+        </span>
+        <span v-else>
+          &zwnj;
+        </span>
         <v-icon
           large
           v-if="this.state.selected"
@@ -21,7 +30,7 @@
         <v-icon
           large
           v-if="this.state.value == 'L'"
-          class="ml-n10 mt-n1 float-right"
+          class="ml-n10 mt-n1 float-right mdi-rotate-45"
           :class="textColor"
         >
           mdi-lock-open
@@ -36,7 +45,7 @@ export default {
   name: "QwixxButton",
 
   data: () => ({
-    test: 55
+    //
   }),
 
   props: {
@@ -52,7 +61,6 @@ export default {
 
   methods: {
     toggleSelected() {
-      // console.log(`${this.color} - ${this.value} selected`);
       this.state.selected = !this.state.selected;
       this.$emit("numberClicked", this.state);
     }

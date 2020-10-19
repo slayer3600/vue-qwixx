@@ -24,3 +24,5 @@ npm run lint
 See [Configuration Reference](https://cli.vuejs.org/config/).
 
 https://vuetifyjs.com/en/introduction/why-vuetify
+
+https://calm-stone-0ffcbc61e.azurestaticapps.net

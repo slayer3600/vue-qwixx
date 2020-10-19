@@ -1,18 +1,23 @@
 <template>
-  <v-card
-    class="d-flex flex-row pa-4 mb-2 justify-space-between d-inline"
-    flat
-    tile
-    :class="color"
-  >
-    <div v-for="item in qwixxNumbersList" :key="item.index">
-      <QwixxButton
-        :state="item"
-        :color="color"
-        @numberClicked="onNumberClicked"
-      />
-    </div>
-  </v-card>
+  <div>
+    <v-card
+      class="d-flex flex-row pa-4 mb-2 justify-space-between d-inline"
+      flat
+      tile
+      :class="color"
+    >
+      <v-icon x-large color="grey darken-3" class="ml-n12 mdi-rotate-90">
+        mdi-triangle
+      </v-icon>
+      <div v-for="item in qwixxNumbersList" :key="item.index">
+        <QwixxButton
+          :state="item"
+          :color="color"
+          @numberClicked="onNumberClicked"
+        />
+      </div>
+    </v-card>
+  </div>
 </template>
 
 <script>

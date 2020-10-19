@@ -57,11 +57,18 @@
           @onScoreChange="onScoreChange"
         />
 
+        <!-- Penalties -->
         <v-card
           class="d-flex flex-row pa-4 mb-2 justify-end d-inline"
           flat
           tile
         >
+          <v-icon large>
+            mdi-dice-5
+          </v-icon>
+          <v-icon x-large class="red--text">
+            mdi-alpha-x
+          </v-icon>
           <div class="mt-2 text-h5 font-weight-black">penalties</div>
           <div v-for="item in penalties" :key="item.index">
             <v-card
@@ -77,6 +84,7 @@
           </div>
         </v-card>
 
+        <!-- Totals -->
         <v-card
           class="d-flex flex-row pa-4 mb-2 justify-space-around d-inline grey lighten-2"
           flat
