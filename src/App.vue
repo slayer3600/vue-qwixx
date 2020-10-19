@@ -63,13 +63,21 @@
           flat
           tile
         >
-          <v-icon large>
-            mdi-dice-5
-          </v-icon>
-          <v-icon x-large class="red--text">
-            mdi-alpha-x
-          </v-icon>
-          <div class="mt-2 text-h5 font-weight-black">penalties</div>
+          <div class="stackContainer pr-6">
+            <v-icon x-large class="dice-icon">
+              mdi-dice-5
+            </v-icon>
+            <!-- <v-icon x-large class="red--text ex-icon">
+              mdi-alpha-x
+            </v-icon> -->
+            <span class="red--text font-weight-black text-h4 ex-icon pl-2"
+              >X</span
+            >
+          </div>
+          <div class="text-h6 ml-4">
+            = -5
+          </div>
+
           <div v-for="item in penalties" :key="item.index">
             <v-card
               outlined
@@ -205,3 +213,23 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.stackContainer {
+  margin: 0;
+  position: relative;
+}
+.dice-icon {
+  position: absolute;
+  z-index: 1;
+  left: 0;
+  top: 0;
+}
+
+.ex-icon {
+  position: absolute;
+  z-index: 2;
+  left: 0;
+  top: 0;
+}
+</style>
