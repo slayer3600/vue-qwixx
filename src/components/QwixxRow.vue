@@ -91,7 +91,8 @@ export default {
       var multiplier = this.qwixxScoreMultipliers.filter(
         item => item.count == this.qwixxItemsSelected
       );
-      var score = multiplier[0].score;
+      var score = multiplier[0] === undefined ? 0 : multiplier[0].score;
+      console.log(`Computed Score: ${score}`);
       this.$emit("onScoreChange", score, this.color);
       return score;
     }
