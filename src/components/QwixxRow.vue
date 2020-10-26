@@ -9,8 +9,9 @@
       <v-icon x-large color="grey darken-3" class="ml-n12 mdi-rotate-90">
         mdi-triangle
       </v-icon>
-      <div v-for="item in qwixxNumbersList" :key="item.index">
+      <div v-for="(item, index) in qwixxNumbersList" :key="item.value">
         <QwixxButton
+          :index="index"
           :state="item"
           :color="color"
           @numberClicked="onNumberClicked"
@@ -32,18 +33,19 @@ export default {
   data: () => ({
     numbers: 12,
     qwixxNumbers: [
-      { index: 1, value: "2", selected: false, disabled: false },
-      { index: 2, value: "3", selected: false, disabled: false },
-      { index: 3, value: "4", selected: false, disabled: false },
-      { index: 4, value: "5", selected: false, disabled: false },
-      { index: 5, value: "6", selected: false, disabled: false },
-      { index: 6, value: "7", selected: false, disabled: false },
-      { index: 7, value: "8", selected: false, disabled: false },
-      { index: 8, value: "9", selected: false, disabled: false },
-      { index: 9, value: "10", selected: false, disabled: false },
-      { index: 10, value: "11", selected: false, disabled: false },
-      { index: 11, value: "12", selected: false, disabled: false }
+      { value: "2", selected: false, disabled: false },
+      { value: "3", selected: false, disabled: false },
+      { value: "4", selected: false, disabled: false },
+      { value: "5", selected: false, disabled: false },
+      { value: "6", selected: false, disabled: false },
+      { value: "7", selected: false, disabled: false },
+      { value: "8", selected: false, disabled: false },
+      { value: "9", selected: false, disabled: false },
+      { value: "10", selected: false, disabled: false },
+      { value: "11", selected: false, disabled: false },
+      { value: "12", selected: false, disabled: false }
     ],
+    qwixxLock: { value: "L", selected: false, disabled: false },
     qwixxScoreMultipliers: [
       { count: 1, score: 1 },
       { count: 2, score: 3 },
@@ -57,14 +59,7 @@ export default {
       { count: 10, score: 55 },
       { count: 11, score: 66 },
       { count: 12, score: 78 }
-    ],
-    qwixxLock: { index: 12, value: "L", selected: false, disabled: false },
-    qwixxLockReversed: {
-      index: 0,
-      value: "L",
-      selected: false,
-      disabled: false
-    }
+    ]
   }),
 
   props: {
@@ -77,14 +72,14 @@ export default {
       if (this.isReversed) {
         // eslint-disable-next-line vue/no-side-effects-in-computed-properties
         this.qwixxNumbers = this.qwixxNumbers.slice(0).reverse();
-        // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-        this.qwixxNumbers.push(this.qwixxLockReversed);
-        return this.qwixxNumbers;
-      } else {
-        // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-        this.qwixxNumbers.push(this.qwixxLock);
-        return this.qwixxNumbers;
       }
+      // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+      this.qwixxNumbers.push(this.qwixxLock);
+      // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+      this.qwixxNumbers[10].disabled = true;
+      // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+      this.qwixxNumbers[11].disabled = true;
+      return this.qwixxNumbers;
     },
 
     qwixxItemsSelected() {
@@ -100,14 +95,32 @@ export default {
       console.log(`Computed Score: ${score}`);
       this.$emit("onScoreChange", score, this.color);
       return score;
+    },
+
+    getHighestSelectedIndex() {
+      let highestSelectedIndex = 0;
+      for (let index = 0; index < this.qwixxNumbers.length; index++) {
+        // const element = array[index];
+        if (this.qwixxNumbers[index].selected === true) {
+          highestSelectedIndex = index;
+        }
+      }
+      return highestSelectedIndex;
     }
   },
 
   methods: {
-    onNumberClicked(selectedItem) {
-      // console.log(`${JSON.stringify(this.qwixxNumbers)} emitted to parent.`);
-      // console.log(`${this.isReversed} isReversed to parent.`);
-      console.log(`${JSON.stringify(selectedItem)} state to parent.`);
+    onNumberClicked(selectedItem, index) {
+      console.log(`Index: ${index}`);
+      console.log(`Selected: ${selectedItem.selected}`);
+      //enable/disable last item
+      if (this.qwixxItemsSelected >= 5) {
+        this.qwixxNumbers[10].disabled = false;
+        this.qwixxNumbers[11].disabled = false;
+      } else {
+        this.qwixxNumbers[10].disabled = true;
+        this.qwixxNumbers[11].disabled = true;
+      }
 
       if (
         this.isReversed &&
@@ -129,45 +142,29 @@ export default {
         }
       }
 
+      console.log(`Highest Selected: ${this.getHighestSelectedIndex}`);
+      this.toggleDisable(index);
       console.log(`Score: ${this.score}`);
-      // this.qwixxNumbers.some(function(item) {
-      //   if (this.isReversed) {
-      //     if (item.index > selectedItem.index) {
-      //       if (selectedItem.selected) {
-      //         console.log("I was selected.");
-      //         item.selected ? (item.disabled = false) : (item.disabled = true);
-      //       } else {
-      //         console.log("I was de-selected.");
-      //         // item.selected ? (item.disabled = false) : (item.disabled = false);
-      //         if (item.selected) {
-      //           return true;
-      //         } else {
-      //           item.disabled = false;
-      //         }
-      //       }
-      //     }
-      //   } else {
-      //     if (item.index < selectedItem.index) {
-      //       item.selected ? (item.disabled = false) : (item.disabled = true);
-      //       console.log("I am less than selected value");
-      //     }
-      //   }
-      // }, this);
-    }
+    },
 
-    // updateBoard(selectedItem, updatedItem) {
-    //   if (this.isReversed) {
-    //     if (updatedItem.index > selectedItem.index) {
-    //       updatedItem.disabled = true;
-    //       console.log("I am more than selected value");
-    //     }
-    //   } else {
-    //     if (updatedItem.index < selectedItem.index) {
-    //       updatedItem.disabled = true;
-    //       console.log("I am less than selected value");
-    //     }
-    //   }
-    // }
+    toggleDisable(selectedIndex) {
+      let highestIndex = 0;
+      highestIndex =
+        this.getHighestSelectedIndex > selectedIndex
+          ? this.getHighestSelectedIndex
+          : selectedIndex;
+      for (let index = 0; index <= highestIndex; index++) {
+        if (this.qwixxNumbers[index].selected === false) {
+          this.qwixxNumbers[index].disabled = true;
+        } else {
+          this.qwixxNumbers[index].disabled = false;
+        }
+
+        if (index >= this.getHighestSelectedIndex) {
+          this.qwixxNumbers[index].disabled = false;
+        }
+      }
+    }
   }
 };
 </script>

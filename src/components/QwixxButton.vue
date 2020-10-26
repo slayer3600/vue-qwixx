@@ -8,6 +8,7 @@
         'rounded-lg': this.state.value < 13,
         'rounded-circle': this.state.value == 'L'
       }"
+      :disabled="this.state.disabled"
       @click="toggleSelected"
       tile
     >
@@ -49,6 +50,7 @@ export default {
   }),
 
   props: {
+    index: Number,
     color: String,
     state: Object
   },
@@ -62,7 +64,7 @@ export default {
   methods: {
     toggleSelected() {
       this.state.selected = !this.state.selected;
-      this.$emit("numberClicked", this.state);
+      this.$emit("numberClicked", this.state, this.index);
     }
   },
 
